@@ -25,5 +25,5 @@ gulp.task('watch', ['browserSync'], tasks.watch);
 
 gulp.task('production', tasks.production);
 
-gulp.task('deploy:gh-pages', tasks.githubPages);
+gulp.task('deploy:gh-pages', tasks.ghPages);
 
