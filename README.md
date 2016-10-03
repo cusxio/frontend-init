@@ -4,30 +4,20 @@ A boilerplate that is easily extendible to incorporate most modern Frontend Fram
 
 ## Features
 
-- Completely unopinionated.
+- Completely unopinionated
     - Choose your own Frontend Framework/ JavaScript Templating Engine
-
 - [Gulp](gulpjs.org)
-
 - [Webpack 2](https://gist.github.com/sokra/27b24881210b56bbaff7)
     - [JavaScript Tree-Shaking](http://www.2ality.com/2015/12/webpack-tree-shaking.html)
     - [Hot Module Replacement](https://medium.com/@rajaraodv/webpack-hot-module-replacement-hmr-e756a726a07#.uex3hxmt8)
-
 - [Babel 6](https://babeljs.io/)
-
 - [BrowserSync](https://www.browsersync.io/)
-
 - [Sass](http://sass-lang.com/)
-
 - [PostCSS](http://postcss.org/)
-
     - [Autoprefixer](https://github.com/postcss/autoprefixer)
     - [cssnano](http://cssnano.co/)
-
 - [Imagemin](https://github.com/imagemin/imagemin)
-
 - [Rev](https://github.com/sindresorhus/gulp-rev) assets for cache busting
-
 - Aggressive minification of [HTML](https://github.com/kangax/html-minifier), [CSS](http://cssnano.co/), and [JS](https://github.com/mishoo/UglifyJS).
 
 ## Get Started
