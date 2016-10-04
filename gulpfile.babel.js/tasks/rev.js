@@ -16,7 +16,7 @@ gulp.task('rev-assets', () => {
         .pipe(gulp.dest(''));
 });
 
-gulp.task('rev-assets-references-css-js', () => {
+gulp.task('rev-assets-update-references', () => {
     const manifest = gulp.src(path.join(config.root.dest, 'rev-manifest.json'));
 
     return gulp.src([path.join(config.root.dest, '/**/**.{css,js}')])
@@ -33,14 +33,25 @@ gulp.task('rev-css-js', () => {
         .pipe(gulp.dest(''));
 });
 
-gulp.task('rev-css-js-references-html', () => {
+gulp.task('rev-css-js-update-references', () => {
+    function replaceMap(filename) {
+        if (filename.indexOf('.css.map') > -1) {
+            return filename.replace('styles/', '');
+        }
+        return filename.replace('scripts/', '');
+    }
+
     const manifest = gulp.src(path.join(config.root.dest, 'rev-manifest.json'));
 
-    return gulp.src([path.join(config.root.dest, '/**/*.html')])
-        .pipe($.revReplace({ manifest: manifest }))
+    return gulp.src([path.join(config.root.dest, '/**/**.{html,css,js}')])
+        .pipe($.revReplace({
+            manifest: manifest,
+            modifyUnreved: replaceMap,
+            modifyReved: replaceMap,
+        }))
         .pipe(gulp.dest(config.root.dest));
 });
 
 export default function rev(cb) {
-    $.sequence('rev-assets', 'rev-assets-references-css-js', 'rev-css-js', 'rev-css-js-references-html', cb);
+    $.sequence('rev-assets', 'rev-assets-update-references', 'rev-css-js', 'rev-css-js-update-references', cb);
 }
