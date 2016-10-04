@@ -10,7 +10,7 @@ A boilerplate that is easily extendible to incorporate most modern Frontend Fram
 
 - Completely unopinionated
     - Choose your own Frontend Framework/ JavaScript Templating Engine
-- [Gulp](gulpjs.org)
+- [Gulp](http://gulpjs.com/)
 - [Webpack 2](https://gist.github.com/sokra/27b24881210b56bbaff7)
     - [JavaScript Tree-Shaking](http://www.2ality.com/2015/12/webpack-tree-shaking.html)
     - [Hot Module Replacement](https://medium.com/@rajaraodv/webpack-hot-module-replacement-hmr-e756a726a07#.uex3hxmt8)
@@ -49,6 +49,11 @@ $ npm run production
 # For Github Pages
 $ npm run deploy:gh-pages
 ```
+
+## Built with Frontend Init
+
+- [Frontend Init Landing Page](https://cusxio.github.io/frontend-init/)
+- [md-portfolio](https://github.com/cusxio/moderndeveloper-portfolio)
 
 ## License
 
