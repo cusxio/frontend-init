@@ -6,7 +6,7 @@ import webpackConfig from '../webpack';
 
 export default function bs() {
     const compiler = webpack(webpackConfig);
-    console.log(webpackConfig.output.publicPath);
+
     browserSync.init({
         server: ['public'],
         notify: false,
