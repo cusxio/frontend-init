@@ -67,7 +67,7 @@ if (ENV_DEVELOPMENT) {
         loaders: [{
             test: /\.js$/,
             exclude: /node_modules/,
-            loader: 'babel',
+            loader: 'babel-loader',
             query: {
                 presets: [['es2015', { loose: true, modules: false }]],
             },
