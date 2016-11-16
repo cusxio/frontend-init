@@ -14,7 +14,7 @@ const stylesPaths = {
     dest: path.join(config.root.dest, config.css.dest),
 };
 
-const browser = [
+const browsers = [
     'ff >= 30',
     'chrome >= 34',
     'safari >= 7',
@@ -35,7 +35,7 @@ export default function styles() {
             includePaths: ['./node_modules/normalize.css'],
         })
         .on('error', $.sass.logError))
-        .pipe($.postcss([autoprefixer({ browser })]))
+        .pipe($.postcss([autoprefixer({ browsers })]))
         .pipe($.if(ENV_PRODUCTION, $.postcss([cssnano({ autoprefixer: false })])))
         .pipe($.sourcemaps.write('.'))
         .pipe(gulp.dest(stylesPaths.dest))
