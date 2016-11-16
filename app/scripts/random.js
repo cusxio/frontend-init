@@ -7,6 +7,6 @@ const welcomeText = [
 ];
 
 export default function () {
-    const random = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
+    const random = Math.floor(Math.random() * ((4 - 0) + 1)) + 0;
     return welcomeText[random];
 }
