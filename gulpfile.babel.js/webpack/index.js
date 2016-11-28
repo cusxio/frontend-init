@@ -70,6 +70,7 @@ if (ENV_DEVELOPMENT) {
             loader: 'babel-loader',
             query: {
                 presets: [['es2015', { loose: true, modules: false }]],
+                babelrc: false,
             },
         }],
     };
@@ -93,6 +94,7 @@ if (ENV_PRODUCTION) {
             loader: 'babel-loader',
             query: {
                 presets: [['es2015', { loose: true, modules: false }]],
+                babelrc: false,
             },
         }],
     };
