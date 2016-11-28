@@ -8,9 +8,15 @@ export default function scripts(cb) {
         return;
     }
 
-    webpack(webpackConfig, (err) => {
+    webpack(webpackConfig, (err, stats) => {
         if (err) {
-            console.log(err);
+            console.error(err);
+            process.exit(1);
+        }
+
+        if (stats.hasErrors()) {
+            console.error(stats.toString('errors-only'));
+            process.exit(1);
         }
         cb();
     });
