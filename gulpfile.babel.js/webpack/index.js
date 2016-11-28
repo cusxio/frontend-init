@@ -1,106 +1,81 @@
-import path from 'path';
+import { resolve, join } from 'path';
 import webpack from 'webpack';
-import config from '../config';
-
-const scriptsPaths = {
-    src: path.join(config.root.src, config.js.src),
-    dest: path.join(config.root.dest, config.js.dest),
-};
 
 // =====================================
-//  ENVIRONMENT VARIABLES
+//  VARIABLES
 // -------------------------------------
 
+const dir = resolve('.');
+const clientDir = join(dir, 'app', 'scripts');
+const distDir = join(dir, 'public', 'scripts');
+const nodeModulesDir = join(dir, 'node_modules');
+
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const ENV_DEVELOPMENT = NODE_ENV === 'development';
-const ENV_PRODUCTION = NODE_ENV === 'production';
+const dev = NODE_ENV !== 'production';
 
 // =====================================
 //  CONFIGURATIONS
 // -------------------------------------
 
-const webpackConfig = {};
+const config = {};
 
-webpackConfig.plugins = [
+config.devtool = dev ? '#cheap-module-eval-source-map' : '#source-map';
+
+config.target = 'web';
+
+config.plugins = [
     new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
+        'process.env.NODE_ENV': dev ? JSON.stringify('development') : JSON.stringify('production'),
     }),
 ];
 
-webpackConfig.context = path.resolve(scriptsPaths.src);
+config.context = clientDir;
 
-webpackConfig.resolve = {
+config.resolve = {
     modules: [
-        path.resolve(scriptsPaths.src),
-        'node_modules',
+        nodeModulesDir,
     ],
 };
 
-// =====================================
-//  DEVELOPMENT or PRODUCTION
-// -------------------------------------
+config.entry = {
+    app: ['./app.js'],
+};
 
-if (ENV_DEVELOPMENT || ENV_PRODUCTION) {
-    webpackConfig.entry = {
-        app: ['./app.js'],
-    };
+config.output = {
+    path: distDir,
+    filename: '[name].js',
+    publicPath: '/scripts/',
+};
 
-    webpackConfig.output = {
-        path: path.resolve(scriptsPaths.dest),
-        filename: '[name].js',
-        publicPath: '/scripts/',
-    };
-}
+config.module = {
+    loaders: [{
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+            presets: [['es2015', { loose: true, modules: false }], 'stage-0'],
+            babelrc: false,
+        },
+    }],
+};
 
-// =====================================
-//  DEVELOPMENT
-// -------------------------------------
+config.resolveLoader = {
+    modules: [
+        nodeModulesDir,
+    ],
+};
 
-if (ENV_DEVELOPMENT) {
-    webpackConfig.devtool = 'cheap-module-source-map';
-
-    webpackConfig.entry.app.unshift(
+if (dev) {
+    config.entry.app.unshift(
         'webpack-hot-middleware/client?reload=true'
     );
 
-    webpackConfig.module = {
-        loaders: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-            query: {
-                presets: [['es2015', { loose: true, modules: false }]],
-                babelrc: false,
-            },
-        }],
-    };
-
-    webpackConfig.plugins.push(
-        new webpack.HotModuleReplacementPlugin()
+    config.plugins.push(
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
     );
-}
-
-// =====================================
-//  PRODUCTION
-// -------------------------------------
-
-if (ENV_PRODUCTION) {
-    webpackConfig.devtool = 'source-map';
-
-    webpackConfig.module = {
-        loaders: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-            query: {
-                presets: [['es2015', { loose: true, modules: false }]],
-                babelrc: false,
-            },
-        }],
-    };
-
-    webpackConfig.plugins.push(
-        new webpack.optimize.DedupePlugin(),
+} else {
+    config.plugins.push(
         new webpack.LoaderOptionsPlugin({
             minimize: true,
         }),
@@ -117,4 +92,4 @@ if (ENV_PRODUCTION) {
     );
 }
 
-export default webpackConfig;
+export default config;
