@@ -37,7 +37,10 @@ export default function styles() {
         .on('error', $.sass.logError))
         .pipe($.postcss([autoprefixer({ browsers })]))
         .pipe($.if(ENV_PRODUCTION, $.postcss([cssnano({ autoprefixer: false })])))
+        .pipe($.if(ENV_PRODUCTION, $.rev()))
         .pipe($.sourcemaps.write('.'))
         .pipe(gulp.dest(stylesPaths.dest))
+        .pipe($.if(ENV_PRODUCTION, $.rev.manifest(path.join(config.root.dest, 'rev-manifest.json'), { merge: true })))
+        .pipe($.if(ENV_PRODUCTION, gulp.dest('')))
         .pipe(browserSync.stream({ match: '**/*.css' }));
 }

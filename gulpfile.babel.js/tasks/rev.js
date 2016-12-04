@@ -6,7 +6,7 @@ import config from '../config';
 const $ = gulpLoadPlugins();
 
 gulp.task('rev-assets', () => {
-    const ignores = `!${path.join(config.root.dest, '/**/*+(css|js|html|map)')}`;
+    const ignores = `!${path.join(config.root.dest, '/**/*+(css|js|html|map|json)')}`;
 
     return gulp.src([path.join(config.root.dest, '/**/*'), ignores])
         .pipe($.rev())
@@ -16,7 +16,7 @@ gulp.task('rev-assets', () => {
         .pipe(gulp.dest(''));
 });
 
-gulp.task('rev-assets-update-references', () => {
+gulp.task('rev-update-references', () => {
     const manifest = gulp.src(path.join(config.root.dest, 'rev-manifest.json'));
 
     return gulp.src([path.join(config.root.dest, '/**/**.{css,js}')])
@@ -24,34 +24,14 @@ gulp.task('rev-assets-update-references', () => {
         .pipe(gulp.dest(config.root.dest));
 });
 
-gulp.task('rev-css-js', () =>
-     gulp.src([path.join(config.root.dest, '/**/**.{css,js,map}')])
-        .pipe($.rev())
-        .pipe(gulp.dest(config.root.dest))
-        .pipe($.revNapkin({ verbose: false }))
-        .pipe($.rev.manifest(path.join(config.root.dest, 'rev-manifest.json'), { merge: true }))
-        .pipe(gulp.dest(''))
-);
-
-gulp.task('rev-css-js-update-references', () => {
-    function replaceMap(filename) {
-        if (filename.indexOf('.css.map') > -1) {
-            return filename.replace('styles/', '');
-        }
-        return filename.replace('scripts/', '');
-    }
-
+gulp.task('update-html', () => {
     const manifest = gulp.src(path.join(config.root.dest, 'rev-manifest.json'));
 
-    return gulp.src([path.join(config.root.dest, '/**/**.{html,css,js}')])
-        .pipe($.revReplace({
-            manifest,
-            modifyUnreved: replaceMap,
-            modifyReved: replaceMap,
-        }))
+    return gulp.src([path.join(config.root.dest, '/**/*.html')])
+        .pipe($.revReplace({ manifest }))
         .pipe(gulp.dest(config.root.dest));
 });
 
 export default function rev(cb) {
-    $.sequence('rev-assets', 'rev-assets-update-references', 'rev-css-js', 'rev-css-js-update-references', cb);
+    $.sequence('rev-assets', 'rev-update-references', 'update-html', cb);
 }

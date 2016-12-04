@@ -42,7 +42,8 @@
     "gulp-sourcemaps": "^2.2.0",
     "webpack": "^2.1.0-beta.27",
     "webpack-dev-middleware": "^1.8.4",
-    "webpack-hot-middleware": "^2.13.2"
+    "webpack-hot-middleware": "^2.13.2",
+    "webpack-md5-hash": "0.0.5"
   },
   "dependencies": {
     "normalize.css": "^5.0.0"
