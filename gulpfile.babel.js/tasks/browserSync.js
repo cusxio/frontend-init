@@ -6,7 +6,6 @@ import webpackConfig from '../webpack';
 
 export default function bs() {
     const compiler = webpack(webpackConfig);
-
     browserSync.init({
         server: ['public'],
         notify: false,
@@ -15,11 +14,8 @@ export default function bs() {
         middleware: [
             devMiddleware(compiler, {
                 publicPath: webpackConfig.output.publicPath,
-                quiet: true,
                 noInfo: true,
-                stats: {
-                    colors: true,
-                },
+                stats: 'errors-only',
             }),
             hotMiddleware(compiler),
         ],

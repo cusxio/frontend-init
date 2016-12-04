@@ -9,11 +9,6 @@ import config from '../config';
 const $ = gulpLoadPlugins();
 const ENV_PRODUCTION = process.env.NODE_ENV === 'production';
 
-const stylesPaths = {
-    src: path.join(config.root.src, config.css.src, '/**/*.{sass,scss,css}'),
-    dest: path.join(config.root.dest, config.css.dest),
-};
-
 const browsers = [
     'ff >= 30',
     'chrome >= 34',
@@ -27,8 +22,8 @@ const browsers = [
 ];
 
 export default function styles() {
-    return gulp.src(stylesPaths.src)
-        .pipe($.sourcemaps.init())
+    return gulp.src(path.join(config.css.src, '/**/*.{sass,scss,css}'))
+        .pipe($.if(!ENV_PRODUCTION, $.sourcemaps.init()))
         .pipe($.sass({
             precision: 10,
             indentedSyntax: true,
@@ -38,8 +33,8 @@ export default function styles() {
         .pipe($.postcss([autoprefixer({ browsers })]))
         .pipe($.if(ENV_PRODUCTION, $.postcss([cssnano({ autoprefixer: false })])))
         .pipe($.if(ENV_PRODUCTION, $.rev()))
-        .pipe($.sourcemaps.write('.'))
-        .pipe(gulp.dest(stylesPaths.dest))
+        .pipe($.if(!ENV_PRODUCTION, $.sourcemaps.write()))
+        .pipe(gulp.dest(config.css.dest))
         .pipe($.if(ENV_PRODUCTION, $.rev.manifest(path.join(config.root.dest, 'rev-manifest.json'), { merge: true })))
         .pipe($.if(ENV_PRODUCTION, gulp.dest('')))
         .pipe(browserSync.stream({ match: '**/*.css' }));

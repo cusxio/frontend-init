@@ -1,26 +1,31 @@
+import { resolve, join } from 'path';
+
+const src = resolve('.', 'app');
+const dest = resolve('.', 'public');
+
 export default {
     root: {
-        src: './app',
-        dest: './public',
+        src,
+        dest,
     },
     css: {
-        src: 'styles',
-        dest: 'styles',
+        src: join(src, 'styles'),
+        dest: join(dest, 'styles'),
     },
     js: {
-        src: 'scripts',
-        dest: 'scripts',
+        src: join(src, 'scripts'),
+        dest: join(src, 'scripts'),
     },
     html: {
-        src: 'html',
-        dest: './',
+        src: join(src, 'html'),
+        dest,
     },
     images: {
-        src: 'images',
-        dest: 'images',
+        src: join(src, 'images'),
+        dest: join(dest, 'images'),
     },
     static: {
-        src: 'static',
-        dest: './',
+        src: join(src, 'static'),
+        dest,
     },
 };

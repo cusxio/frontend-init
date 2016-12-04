@@ -5,13 +5,8 @@ import config from '../config';
 
 const $ = gulpLoadPlugins();
 
-const staticPaths = {
-    src: path.join(config.root.src, config.static.src, '/**'),
-    dest: path.join(config.root.dest, config.static.dest),
-};
-
 export default function staticTask() {
-    return gulp.src(staticPaths.src)
-        .pipe($.changed(staticPaths.dest))
-        .pipe(gulp.dest(staticPaths.dest));
+    return gulp.src(path.join(config.static.src, '/**'))
+        .pipe($.changed(config.static.dest))
+        .pipe(gulp.dest(config.static.dest));
 }
