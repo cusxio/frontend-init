@@ -8,7 +8,7 @@ const $ = gulpLoadPlugins();
 const ENV_PRODUCTION = process.env.NODE_ENV === 'production';
 
 export default function images() {
-    return gulp.src(path.join(config.images.src, '/**/*.{jpg,png,svg,gif}'))
+    return gulp.src(path.join(config.images.src, '/**/*.{jpg,png,svg,gif,jpeg}'))
         .pipe($.changed(config.images.dest))
         .pipe($.if(ENV_PRODUCTION, $.imagemin({
             progressive: true,
